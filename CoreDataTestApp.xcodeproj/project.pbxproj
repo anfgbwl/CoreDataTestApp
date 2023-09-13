@@ -14,6 +14,7 @@
 		3F0868CF2AB076520030B68F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F0868CE2AB076520030B68F /* Assets.xcassets */; };
 		3F0868D22AB076520030B68F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F0868D02AB076520030B68F /* LaunchScreen.storyboard */; };
 		3F0868DB2AB174D10030B68F /* Todo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0868D92AB174D10030B68F /* Todo+CoreDataClass.swift */; };
+		3F0868E02AB17EAA0030B68F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3F0868DF2AB17EAA0030B68F /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F0868E02AB17EAA0030B68F /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +96,9 @@
 			dependencies = (
 			);
 			name = CoreDataTestApp;
+			packageProductDependencies = (
+				3F0868DF2AB17EAA0030B68F /* SnapKit */,
+			);
 			productName = CoreDataTestApp;
 			productReference = 3F0868BF2AB076510030B68F /* CoreDataTestApp.app */;
 			productType = "com.apple.product-type.application";
@@ -122,6 +127,9 @@
 				Base,
 			);
 			mainGroup = 3F0868B62AB076510030B68F;
+			packageReferences = (
+				3F0868DE2AB17EAA0030B68F /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 3F0868C02AB076510030B68F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -358,6 +366,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3F0868DE2AB17EAA0030B68F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3F0868DF2AB17EAA0030B68F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F0868DE2AB17EAA0030B68F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3F0868CB2AB076510030B68F /* CoreDataTestApp.xcdatamodeld */ = {
