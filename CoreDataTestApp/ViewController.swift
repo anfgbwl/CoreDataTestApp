@@ -46,8 +46,14 @@ class ViewController: UIViewController {
     // MARK: - function
     // Fetch Todo
     private func fetchTodo() {
+        let request = Todo.fetchRequest()
+        
+        // Sort Todo
+        let sort = NSSortDescriptor(key: "todo", ascending: true)
+        request.sortDescriptors = [sort]
+        
         do {
-            self.todos = try context.fetch(Todo.fetchRequest())
+            self.todos = try context.fetch(request)
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -94,7 +100,6 @@ class ViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
-
 
 }
 
