@@ -68,6 +68,7 @@ class ViewController: UIViewController {
             let newTodo = Todo(context: self.context)
             newTodo.todo = textField.text
             newTodo.createDate = Date()
+            newTodo.isComplete = false
             
             do {
                 try self.context.save()
@@ -107,6 +108,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let todo = todos![indexPath.row]
         cell.textLabel?.text = todo.todo
+        if todo.isComplete == true {
+            cell.textLabel?.textColor = .systemGray2
+        } else {
+            cell.textLabel?.textColor = .black
+        }
         return cell
     }
     
@@ -122,6 +128,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let save = UIAlertAction(title: "Save", style: .default) { _ in
             let textField = alert.textFields![0]
             selectTodo.todo = textField.text
+            selectTodo.isComplete = false
             
             do {
                 try self.context.save()
@@ -137,9 +144,42 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    // Complete Todo
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let doneAction = UIContextualAction(style: .normal, title: "Done") { (action, view, completionHandler) in
+            let todoToDone = self.todos![indexPath.row]
+            todoToDone.isComplete = true
+            
+            do {
+                try self.context.save()
+            } catch {
+                print("Delete error")
+            }
+            
+            self.fetchTodo()
+        }
+        doneAction.backgroundColor = .systemBlue
+        
+        let restartAction = UIContextualAction(style: .normal, title: "Restart") { (action, view, completionHandler) in
+            let todoToRestart = self.todos![indexPath.row]
+            todoToRestart.isComplete = false
+            
+            do {
+                try self.context.save()
+            } catch {
+                print("Delete error")
+            }
+            
+            self.fetchTodo()
+        }
+        restartAction.backgroundColor = .orange
+        
+        return UISwipeActionsConfiguration(actions: [doneAction, restartAction])
+    }
+    
     // Delete Todo
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
             let todoToRemove = self.todos![indexPath.row]
             self.context.delete(todoToRemove)
             
@@ -151,7 +191,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
             self.fetchTodo()
         }
-        return UISwipeActionsConfiguration(actions: [action])
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
 }
