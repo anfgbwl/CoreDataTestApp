@@ -10,8 +10,9 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-    // MARK: - Variables
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    // MARK: - Variables
     private var todos: [Todo]?
     
     // MARK: - UI Conponents
@@ -43,6 +44,7 @@ class ViewController: UIViewController {
     }
     
     // MARK: - function
+    // Fetch Todo
     private func fetchTodo() {
         do {
             self.todos = try context.fetch(Todo.fetchRequest())
@@ -55,6 +57,7 @@ class ViewController: UIViewController {
         
     }
     
+    // Create Todo
     @objc private func addTapped() {
         let alert = UIAlertController(title: "Add Todo", message: "", preferredStyle: .alert)
         alert.addTextField{ (textField) in
@@ -69,7 +72,7 @@ class ViewController: UIViewController {
             do {
                 try self.context.save()
             } catch {
-                print("save error")
+                print("Save error")
             }
             
             self.fetchTodo()
@@ -105,6 +108,50 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let todo = todos![indexPath.row]
         cell.textLabel?.text = todo.todo
         return cell
+    }
+    
+    // Edit Todo
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectTodo = self.todos![indexPath.row]
+        let alert = UIAlertController(title: "Edit Todo", message: "Plese edit your todo.", preferredStyle: .alert)
+        alert.addTextField()
+        
+        let textField = alert.textFields![0]
+        textField.text = selectTodo.todo
+        
+        let save = UIAlertAction(title: "Save", style: .default) { _ in
+            let textField = alert.textFields![0]
+            selectTodo.todo = textField.text
+            
+            do {
+                try self.context.save()
+            } catch {
+                print("Edit error")
+            }
+            
+            self.fetchTodo()
+        }
+        
+        alert.addAction(save)
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    // Delete Todo
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+            let todoToRemove = self.todos![indexPath.row]
+            self.context.delete(todoToRemove)
+            
+            do {
+                try self.context.save()
+            } catch {
+                print("Delete error")
+            }
+            
+            self.fetchTodo()
+        }
+        return UISwipeActionsConfiguration(actions: [action])
     }
     
 }
